@@ -4,10 +4,7 @@ import signal
 import time
 import paho.mqtt.client
 import argparse
-
 import serial
-
-global con
 
 
 def interrupt(sig, frame):
@@ -29,7 +26,6 @@ def main():
     parser.add_argument("-serial", type=str, nargs=1, default="/dev/ttyUSB0",
                         help="the serial interface to the GQ GMC Geiger Counter (default: /dev/ttyUSB0)")
     args = parser.parse_args()
-    global con
     con = serial.Serial(args.serial, args.baudrate)
     con.write("<GETVER>>".encode())
     version = con.read(14)
