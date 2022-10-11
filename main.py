@@ -26,20 +26,20 @@ def main():
     parser.add_argument("-serial", type=str, nargs=1, default="/dev/ttyUSB0",
                         help="the serial interface to the GQ GMC Geiger Counter (default: /dev/ttyUSB0)")
     args = parser.parse_args()
-    con = serial.Serial(args.serial, args.baudrate)
+    con = serial.Serial(args.serial[0], args.baudrate[0])
     con.write("<GETVER>>".encode())
     version = con.read(14)
     print(version.decode())
     signal.signal(getattr(signal, "SIGINT"), interrupt)
 
     mqtt = paho.mqtt.client.Client("mqtt")
-    mqtt.connect(args.broker, args.port)
+    mqtt.connect(args.broker[0], args.port[0])
 
     while True:
         con.write("<GETCPM>>".encode())
         value = ord(con.read(1))+ord(con.read(1))
         print(value)
-        mqtt.publish(parser.topic, value)
+        mqtt.publish(parser.topic[0], value)
         time.sleep(60)
 
 
