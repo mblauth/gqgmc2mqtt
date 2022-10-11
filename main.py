@@ -39,7 +39,7 @@ def main():
         con.write("<GETCPM>>".encode())
         value = ord(con.read(1))+ord(con.read(1))
         print(value)
-        mqtt.publish(parser.topic[0], value)
+        mqtt.publish(args.topic[0], value)
         time.sleep(60)
 
 
